@@ -221,7 +221,7 @@ def register(request):
                 "message": "Username already taken."
             })
         login(request, user)
-        return HttpResponseRedirect(reverse("auctions:register"))
+        return HttpResponseRedirect(reverse("auctions:login"))
     else:
         return render(request, "auctions/register.html")
 

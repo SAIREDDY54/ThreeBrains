@@ -2,13 +2,21 @@
 {% load static %}
 
 {% block nav %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<style>
+  .ml-auto > li:hover {
+    background-color: #6d6d6d5b;
+    border-radius: 10px;
+    
+    opacity: 0.8;
+  }
+</style>
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top" style="background-color: #e3f2fd">
           <a class="navbar-brand" href="#">Three Brains</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
-            <input class="form-control" id="myInput" type="text" placeholder="Search.." style="width: 50%;">
+            <input class="form-control" id="myInput" type="text" placeholder="Search.." style="width: 40%;">
             <ul class="navbar-nav ml-auto">
               <li class="nav-item active">
                 <a class="nav-link" href="{% url 'auctions:index' %}">Active Listings</a>
@@ -60,53 +68,60 @@
     {%endif%}
                           
     {% if items %}
-        <div class="container" id="myList">
-            <div class="row" style="margin-top: 10px;" >
+        <div style="display: flex; justify-content: center;" >
+            <div class="row" style="margin-top: 10px; width: 90%; display: flex; justify-content: space-between;" >
         {% for item in items_bids %}
               {% if item.0.status %}
-                <card>
-                  <div class="col-lg-4" >
-                    <div class="card" style="width: 18rem; margin: 10px;">
-                        <img class="card-img-top"  style="height: 220px;" src="{{item.0.img_url}}" alt="Card image cap">
-                        <div class="card-body">
-                          <h5 class="card-title">
-                              <span style="display: block; overflow: hidden; white-space: nowrap; height: 23px; text-overflow: ellipsis;">
+                <div class="card-group">
+                  <div class="col-lg-4">
+                    <div class="card" style="width: 18rem; margin: 10px; border-radius: 15px; padding: 10px; box-shadow: 3px 3px 18px #dfdfdf;">
+                        <img class="card-img-top"  style="height: 220px; border-radius: 15px;" src="{{item.0.img_url}}" alt="Card image cap">
+                        <div style="padding: 10px 5px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center">
+                          <h4 class="card-title">
+                              <span style="display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #6d6d6d;">
                                 {{item.0.title}}
                               </span>
-                              </h5>
+                              </h4>
                           <h6 class="card-subtitle mb-2 text-muted">{{ item.0.user.username }}</h6>
+                        </div>
                             <p class="card-text">
-                                <span id="item-title" style="display: block; overflow: hidden; white-space: nowrap; height: 23px; text-overflow: ellipsis;">
+                                <span id="item-title" style="display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #6d6d6d;">
                                    {{item.0.description}}
                                 </span>
                             </p>
                           
-                          <div style="flex-direction: row; " class="flexbox-container">
-                            <label style="font-size: 20px; font-weight: bold; padding-right: 10px;">Bid</label>
+                          <div style="flex-direction: row; display: flex; align-items: baseline">
+                            <span style="font-size: 18px; padding-right: 10px; color: #6d6d6d;">Bid</span>
                             {% if item.1 %}
-                            <label style="font-size: 35px; ">${{item.1}}</label>
+                            <label style="font-size: 26px; color: #6d6d6d; font-weight: 600;">${{item.1}}</label>
                             {% else %}
-                            <label style="font-size: 35px; ">${{item.0.starting_bid}}</label>
+                            <label style="font-size: 26px; color: #6d6d6d; font-weight: 600;">${{item.0.starting_bid}}</label>
                             {% endif %}
                             
                           </div>
-                          <div style="text-align: center;">
+                          <div style="display: flex; justify-content: space-between;">
                             <!-- <button onclick="showAlert('{{item.title}}');"  href="#" id="myBtn" class="btn btn-primary" data-toggle="modal">Open</button> -->
                             <form method="POST" action=" {% url 'auctions:listing_details' %} ">
                               {% csrf_token %}
                               <input hidden type="text" value="{{item.0.title}}" name="listing_title">
-                              <button   href="#" id="myBtn" class="btn btn-primary" type="submit">Open</button>
+                              <button   href="#" id="myBtn" class="mdc-button mdc-button--raised" type="submit">
+                                <span class="mdc-button__label" style="text-transform: capitalize;">Open</span></button>
                             </form>
                             <form method="POST" action=" {% url 'auctions:index' %} ">
                               {% csrf_token %}
                               <input hidden type="text" value="{{item.0.title}}" name="listing_title">
-                              <button   href="#" id="myBtn1" class="btn btn-secondary" type="submit">Add to Watchlist</button>
+                              <button   href="#" id="myBtn1" class="mdc-button mdc-button--raised mdc-button--leading" type="submit">
+                                <span class="mdc-button__ripple"></span>
+                                <i class="material-icons mdc-button__icon" aria-hidden="true">bookmark</i>
+                                <span class="mdc-button__label" style="text-transform: capitalize;">Wishlist</span>
+                              </button>
                             </form>
                           </div>
                         </div>
                     </div>
                 </div>
-                </card>
+              </div>
                 {% endif %}
         {% endfor %}
         </div>
