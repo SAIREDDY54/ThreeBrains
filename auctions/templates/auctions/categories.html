@@ -1,0 +1,88 @@
+{% extends 'auctions/layout.html' %}
+{% load static %}
+
+{% block nav %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a class="navbar-brand" href="{% url 'auctions:index' %}">Three Brains</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'auctions:index' %}">Active Listings</a>
+              </li>
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'auctions:add' %}">Add Item</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'auctions:watchlist' %}">Watchlist</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'auctions:auctions_history' %}">Auctions History</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'auctions:category_list' %}">Categories</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'auctions:logout' %}">Log Out</a>
+            </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'auctions:login' %}">Log In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'auctions:register' %}">Register</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'auctions:category_list' %}">Categories</a>
+                </li>
+            {% endif %}
+            </ul>
+          </div>
+        </nav>
+{% endblock %}
+
+{% block body %}
+<h1 style="text-align: center; color: #fff;">Categories</h1>
+
+<div class="row" style="margin-top: 10px; margin: 10px;">
+
+    <div class="col-lg-4" style="margin-top: 10px;">
+        <div class="card">
+            <div>
+                <img class="card-img-top" src="https://images.unsplash.com/photo-1583119912267-cc97c911e416?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" style="height: 250px;">
+                <div style="width: 100%; text-align: center;"><a class="card-title" href="/category_list/arts" style="font-size: x-large;">Arts</a></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4" style="margin-top: 10px;">
+        <div class="card">
+            <div>
+                <img class="card-img-top" src="https://cdn.pixabay.com/photo/2015/11/07/11/46/fashion-1031469_1280.jpg" style="height: 250px;">
+                <div style="width: 100%; text-align: center;"><a href="/category_list/clothing" style="font-size: x-large;">Clothing</a></div>
+            </div>
+        </div>
+        
+    </div>
+        <div class="col-lg-4" style="margin-top: 10px;">
+        <div class="card">
+            <div>
+                <img class="card-img-top" src="https://images.pexels.com/photos/207589/pexels-photo-207589.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" style="height: 250px;">
+                <div style="width: 100%; text-align: center;"><a class="card-title" href="/category_list/electronics" style="font-size: x-large;">Electronics</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4" style="margin-top: 10px;">
+        <div class="card">
+            <div>
+                <img class="card-img-top" src="https://images.pexels.com/photos/12211/pexels-photo-12211.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260" style="height: 250px;">
+                <div style="width: 100%; text-align: center;"><a class="card-title" href="/category_list/toys" style="font-size: x-large;">Toys</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock  %}

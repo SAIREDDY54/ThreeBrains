@@ -1,0 +1,53 @@
+{% load static %}
+<html>
+    <head>
+        <link rel="stylesheet"  href="{%  static  'auctions/back.css'  %}">
+    </head>
+    <body>
+
+        {% if message %}
+            <div style="background-color: #fff; color: #000; text-align: center;">{{ message }}</div>
+        {% endif %}
+
+        <section>
+        <div class="box">
+    
+            <div class="square" style="--i:0;"></div>
+            <div class="square" style="--i:1;"></div>
+            <div class="square" style="--i:2;"></div>
+            <div class="square" style="--i:3;"></div>
+            <div class="square" style="--i:4;"></div>
+            <div class="square" style="--i:5;"></div>
+            
+           <div class="container"> 
+            <div class="form"> 
+              <h2>LOGIN to CodePen</h2>
+              <form action="{% url 'auctions:login' %}" method="POST">
+                {% csrf_token %}
+                <div class="inputBx">
+                  <!-- <input type="text" required="required"> -->
+                  <input type="text" name="username" required="required">
+                  <span>Login</span>
+                  <img src="https://www.flaticon.com/svg/static/icons/svg/709/709699.svg" alt="user">
+                </div>
+                <div class="inputBx password">
+                  <input id="password-input" type="password" name="password" required="required">
+                  <span>Password</span>
+                  <a href="#" class="password-control" onclick="return show_hide_password(this);"></a>
+                  <img src="https://www.flaticon.com/svg/static/icons/svg/1828/1828471.svg" alt="lock">
+                </div>
+                <label class="remember"><input type="checkbox">
+                  Remember</label>
+                <div class="inputBx">
+                  <input type="submit" value="Login"> 
+                </div>
+              </form>
+              <p>Forgot password? <a href="#">Click Here</a></p>
+              <p>Don't have an account <a href="{% url 'auctions:register' %}">Sign up</a></p>
+            </div>
+          </div>
+          <script src="{% static '/auctions/main.js' %}"></script>
+          </div> 
+        </section>
+    </body>
+</html>

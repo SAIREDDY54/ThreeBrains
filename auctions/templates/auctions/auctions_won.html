@@ -1,0 +1,111 @@
+{% extends 'auctions/layout.html' %}
+{% load static %}
+
+{% block nav %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a class="navbar-brand" href="#">Three Brains</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'auctions:index' %}">Active Listings</a>
+              </li>
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'auctions:add' %}">Add Item</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'auctions:watchlist' %}">Watchlist</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'auctions:auctions_history' %}">Auctions History</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'auctions:category_list' %}">Categories</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'auctions:logout' %}">Log Out</a>
+            </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'auctions:login' %}">Log In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'auctions:register' %}">Register</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'auctions:category_list' %}">Categories</a>
+                </li>
+            {% endif %}
+            </ul>
+          </div>
+        </nav>
+{% endblock %}
+
+{% block body %}
+
+  <h1 style="text-align: center; color: #fff;">Auctions You Have Won</h1>
+<div style="background: url('https://media.giphy.com/media/5T06ftQWtCMy0XFaaI/giphy.gif'); 
+position: fixed; width: 100%; height: 100%;">
+{% if message %}
+<p>{{message}}</p>
+{% endif %}
+
+{% if items %}
+<div class="container">
+    <div class="row" style="margin-top: 20px;">
+{% for item in items_bids %}
+        <div class="col-lg-4">
+            <div class="card" style="width: 18rem; background-color: #000;">
+                <img class="card-img-top" style="height: 220px;" src="{{item.0.img_url}}" alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">
+                      <span style="color: #fff; display: block; overflow: hidden; white-space: nowrap; height: 23px; text-overflow: ellipsis;">
+                        {{item.0.title}}
+                      </span>
+                  </h5>
+                  <h6 class="card-subtitle mb-2 text" style="color: #fff;">{{ item.0.user.username }}</h6>
+                    <p class="card-text">
+                        <span id="item-title" style="display: block; overflow: hidden; white-space: nowrap; height: 23px; text-overflow: ellipsis;color: #fff;">
+                           {{item.0.description}}
+                        </span>
+                    </p>
+                  
+                  <div style="flex-direction: row; " class="flexbox-container">
+                    <label style="font-size: 20px; font-weight: bold; padding-right: 10px; color: #fff;">Bid</label>
+                    <label style="font-size: 35px; color: #fff;">${{item.1.amount}}</label>
+                  </div>
+                  <div>
+                    <form method="POST" action="{% url 'auctions:payment' %}">
+                      {% csrf_token %}
+                      <script
+                        src="https://checkout.razorpay.com/v1/checkout.js"
+                        data-key="rzp_test_11oVvfqFtEkl7O"
+                        data-amount="{{item.1.amount}}"
+                        data-currency="INR"
+                        data-order_id="{{payment.id}}"
+                        data-buttontext="Pay with Razorpay"
+                        data-name="{{item.0.title}}"
+                        data-description="{{item.0.description}}"
+                        data-image="https://example.com/your_logo.jpg"
+                        data-prefill.name="{{ item.0.user.username }}"
+                        data-prefill.email="saikumar@gmail.com"
+                        data-theme.color="#528FF0"></script>
+                    </form>
+                  </div>
+                </div>
+            </div>
+        </div>
+{% endfor %}
+
+</div>
+</div> 
+{% else %}
+  <h4>No auctions</h4>
+{% endif %}
+
+</div>
+
+{% endblock  %}
